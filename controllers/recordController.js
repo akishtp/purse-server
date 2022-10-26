@@ -23,5 +23,18 @@ const addRecord = async (req, res) => {
     return;
   }
 };
+const deleteRecord = async (req, res) => {
+  const record = await Record.findById(req.params.id);
+  if (record) {
+    try {
+      await record.remove();
+      res.json({ message: "Note Removed" });
+    } catch (error) {
+      res.status(404).json({ error: error.message });
+    }
+  } else {
+    res.status(404).json({ error: req._id });
+  }
+};
 
-module.exports = { getRecord, addRecord };
+module.exports = { getRecord, addRecord, deleteRecord };
