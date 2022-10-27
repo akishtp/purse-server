@@ -3,7 +3,7 @@ const {
   addRecord,
   getRecord,
   deleteRecord,
-} = require("../controllers/recordController");
+} = require("../controllers/recordCOntroller");
 
 const router = express.Router();
 
