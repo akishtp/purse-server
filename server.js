@@ -10,7 +10,13 @@ const userRoutes = require("./routes/user");
 const recordRoutes = require("./routes/record");
 
 const cors = require("cors");
-app.options("*", cors());
+app.use((req, res, next) => {
+  app.options("*", cors());
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
+
+// app.options("*", cors());
 // app.use(cors());
 
 // middleware
