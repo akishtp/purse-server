@@ -9,9 +9,9 @@ const mongoose = require("mongoose");
 const userRoutes = require("./routes/user");
 const recordRoutes = require("./routes/record");
 
-// const cors = require("cors");
-// app.options("*", cors());
-// app.use(cors());
+const cors = require("cors");
+app.use(cors());
+app.options("*", cors());
 
 // middleware
 app.use(express.json());
