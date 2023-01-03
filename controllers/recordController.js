@@ -1,7 +1,9 @@
 const Record = require("../models/recordModels");
 
 const getRecord = async (req, res) => {
-  const records = await Record.find({}).sort({ date: -1 });
+  const user_id = req.user._id;
+
+  const records = await Record.find({ user_id }).sort({ date: -1 });
   res.status(200).json(records);
 };
 
