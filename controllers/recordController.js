@@ -7,6 +7,7 @@ const getRecord = async (req, res) => {
 
 const addRecord = async (req, res) => {
   const { type, account, amount, category, date, payee, note } = req.body;
+  const user_id = req.user._id;
   try {
     const record = await Record.add(
       type,
@@ -15,7 +16,8 @@ const addRecord = async (req, res) => {
       category,
       date,
       payee,
-      note
+      note,
+      user_id
     );
     res.status(200).json(record);
   } catch (error) {

@@ -20,12 +20,12 @@ recordSchema.statics.add = async function (
   category,
   date,
   payee,
-  note
+  note,
+  user_id
 ) {
   if (!type || !account || !amount || !category || !date) {
     throw Error("All fields must be filled");
   }
-  const user_id = req.user._id;
   const record = await this.create({
     type,
     account,
