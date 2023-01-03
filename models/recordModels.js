@@ -10,6 +10,7 @@ const recordSchema = new Schema({
   date: { type: Date, default: Date.now, required: true },
   payee: { type: String },
   note: { type: String },
+  user_id: { type: String, required: true },
 });
 
 recordSchema.statics.add = async function (
@@ -24,6 +25,7 @@ recordSchema.statics.add = async function (
   if (!type || !account || !amount || !category || !date) {
     throw Error("All fields must be filled");
   }
+  const user_id = req.user._id;
   const record = await this.create({
     type,
     account,
@@ -32,6 +34,7 @@ recordSchema.statics.add = async function (
     date,
     payee,
     note,
+    user_id,
   });
   return record;
 };
