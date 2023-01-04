@@ -8,7 +8,11 @@ const userSchema = new Schema({
   name: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  accounts: { type: Object, default: { cash: 0.01, SBI: 0.01 } },
+  accounts: {
+    type: Object,
+    required: true,
+    default: { cash: { type: Double, default: 0.0 } },
+  },
 });
 
 // static signup method
