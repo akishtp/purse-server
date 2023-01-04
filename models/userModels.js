@@ -11,7 +11,7 @@ const userSchema = new Schema({
   accounts: {
     type: Object,
     required: true,
-    default: { cash: { type: Double, default: 0.0 } },
+    default: { cash: 0.01 },
   },
 });
 
