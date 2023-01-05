@@ -41,7 +41,7 @@ const updateUser = async (req, res) => {
     const user = await User.updatehim(req);
     const token = createToken(user._id);
     res.status(200).json({
-      user: user.name,
+      name: user.name,
       email: user.email,
       accounts: user.accounts,
       token,
