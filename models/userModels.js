@@ -58,12 +58,10 @@ userSchema.statics.login = async function (name, password) {
 };
 
 userSchema.statics.update = async function (req) {
-  console.log(req);
-  const user = await this.findOne({ name: req.body.name });
-  if (!user) {
-    throw Error("user ne kittiyilla");
-  }
+  const user = await this.findById(req.body._id);
+  user.name = req.body.name || user.name;
   user.email = req.body.email || user.email;
+  user.accounts = req.body.accounts || user.accounts;
   const updatedUser = await user.save();
   return updatedUser;
 };
