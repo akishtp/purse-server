@@ -57,4 +57,15 @@ userSchema.statics.login = async function (name, password) {
   return user;
 };
 
+userSchema.statics.update = async function (req) {
+  console.log(req);
+  const user = await this.findOne({ name: req.body.name });
+  if (!user) {
+    throw Error("user ne kittiyilla");
+  }
+  user.email = req.body.email || user.email;
+  const updatedUser = await user.save();
+  return updatedUser;
+};
+
 module.exports = mongoose.model("User", userSchema);

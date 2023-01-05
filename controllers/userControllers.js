@@ -35,4 +35,26 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { signupUser, loginUser };
+// user edit Controller
+const updateUser = async (req, res) => {
+  // const { _id } = req.body;
+  // const user = await User.findById(_id);
+  // if (!user) {
+  //   throw Error("Could not find User");
+  // }
+  try {
+    const user = await User.update(req);
+    const token = createToken(user._id);
+    res.status(200).json({
+      user: user.name,
+      email: user.email,
+      accounts: user.accounts,
+      token,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+    return;
+  }
+};
+
+module.exports = { signupUser, loginUser, updateUser };

@@ -19,6 +19,9 @@ app.use(express.json());
 app.use("/api/records", recordRoutes);
 app.use("/api/user", userRoutes);
 
+// DeprecationWarning: Mongoose: the `strictQuery` option will be switched back to `false` by default in Mongoose 7.
+mongoose.set("strictQuery", false);
+
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
