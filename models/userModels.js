@@ -57,13 +57,19 @@ userSchema.statics.login = async function (name, password) {
   return user;
 };
 
-userSchema.statics.update = async function (req) {
-  const user = await this.findById(req.body._id);
+userSchema.statics.updatehim = async function (req) {
+  const user_id = req.user._id;
+  const user = await this.findById(user_id);
   user.name = req.body.name || user.name;
   user.email = req.body.email || user.email;
   user.accounts = req.body.accounts || user.accounts;
   const updatedUser = await user.save();
-  return updatedUser;
+  return {
+    _id: updatedUser._id,
+    name: updatedUser.name,
+    email: updatedUser.email,
+    accounts: updatedUser.accounts,
+  };
 };
 
 module.exports = mongoose.model("User", userSchema);

@@ -37,13 +37,8 @@ const loginUser = async (req, res) => {
 
 // user edit Controller
 const updateUser = async (req, res) => {
-  // const { _id } = req.body;
-  // const user = await User.findById(_id);
-  // if (!user) {
-  //   throw Error("Could not find User");
-  // }
   try {
-    const user = await User.update(req);
+    const user = await User.updatehim(req);
     const token = createToken(user._id);
     res.status(200).json({
       user: user.name,
