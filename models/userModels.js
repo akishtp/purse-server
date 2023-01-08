@@ -11,7 +11,7 @@ const userSchema = new Schema({
   accounts: {
     type: Array,
     required: true,
-    default: [{ cash: 0.01 }],
+    default: [{ accountName: "CASH", money: 0, color: "#ff00ff" }],
   },
 });
 
