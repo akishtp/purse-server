@@ -9,9 +9,9 @@ const userSchema = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   accounts: {
-    type: Object,
+    type: Array,
     required: true,
-    default: { cash: 0.01 },
+    default: [{ cash: 0.01 }],
   },
 });
 
