@@ -8,11 +8,13 @@ const userSchema = new Schema({
   name: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  accounts: {
-    type: Array,
-    required: true,
-    default: [{ name: "CASH", money: 0, color: "#ff00ff" }],
-  },
+  accounts: [
+    {
+      name: { type: String, default: "CASH", required: true },
+      money: { type: mongoose.Types.Decimal128, default: 0, required: true },
+      color: { type: String, default: "#2481de", required: true },
+    },
+  ],
 });
 
 // static signup method
