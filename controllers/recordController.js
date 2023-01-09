@@ -1,4 +1,5 @@
 const Record = require("../models/recordModels");
+const { update } = require("../models/userModels");
 
 const getRecord = async (req, res) => {
   const user_id = req.user._id;
@@ -28,16 +29,20 @@ const addRecord = async (req, res) => {
   }
 };
 const deleteRecord = async (req, res) => {
-  const record = await Record.findById(req.params.id);
-  if (record) {
-    try {
-      await record.remove();
-      res.json({ message: "Note Removed" });
-    } catch (error) {
-      res.status(404).json({ error: error.message });
-    }
-  } else {
-    res.status(404).json({ error: req._id });
+  try {
+    const record = await Record.findById(req.params.id);
+    await record.remove();
+    res.json({ message: "Note Removed" });
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+
+const updateRecord = async (req, res) => {
+  try {
+    const record = await Record.findById(req.params.id);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
   }
 };
 
