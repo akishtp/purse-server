@@ -41,9 +41,19 @@ const deleteRecord = async (req, res) => {
 const updateRecord = async (req, res) => {
   try {
     const record = await Record.findById(req.params.id);
+    record.type = req.body.type || record.type;
+    record.account = req.body.account || record.account;
+    record.amount = req.body.amount || record.amount;
+    record.category = req.body.category || record.category;
+    record.date = req.body.date || record.date;
+    record.payee = req.body.payee || record.payee;
+    record.note = req.body.note || record.note;
+
+    const new_record = await record.save();
+    res.status(200).json(new_record);
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
 };
 
-module.exports = { getRecord, addRecord, deleteRecord };
+module.exports = { getRecord, addRecord, deleteRecord, updateRecord };
