@@ -9,3 +9,5 @@ router.get("/", () => {});
 router.post("/", () => {});
 router.delete("/:id", () => {});
 router.put("/:id", () => {});
+
+module.exports = router;
