@@ -4,7 +4,7 @@ const {
   getRecord,
   deleteRecord,
   updateRecord,
-} = require("../controllers/recordController");
+} = require("../controllers/recordControllers");
 const requireAuth = require("../middleware/requireAuth");
 
 const router = express.Router();
