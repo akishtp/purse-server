@@ -23,8 +23,16 @@ recordSchema.statics.add = async function (
   note,
   user_id
 ) {
-  if (!type || !account || !amount || !category || !date) {
-    throw Error("All fields must be filled");
+  if (!type) {
+    throw Error("Enter an expense type");
+  } else if (!account) {
+    throw Error("Enter an account ");
+  } else if (!amount) {
+    throw Error("Enter an amount");
+  } else if (!category) {
+    throw Error("Enter a Category");
+  } else if (!date) {
+    throw Error("Enter Date and Time");
   }
   const record = await this.create({
     type,
