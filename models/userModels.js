@@ -8,11 +8,6 @@ const userSchema = new Schema({
   name: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  accounts: {
-    type: Array,
-    required: true,
-    default: [{ name: "CASH", money: 0, color: "#2481de" }],
-  },
 });
 
 // static signup method
@@ -62,13 +57,11 @@ userSchema.statics.updatehim = async function (req) {
   const user = await this.findById(user_id);
   user.name = req.body.name || user.name;
   user.email = req.body.email || user.email;
-  user.accounts = req.body.accounts || user.accounts;
   const updatedUser = await user.save();
   return {
     _id: updatedUser._id,
     name: updatedUser.name,
     email: updatedUser.email,
-    accounts: updatedUser.accounts,
   };
 };
 
