@@ -29,7 +29,11 @@ const addRecord = async (req, res) => {
 };
 const deleteRecord = async (req, res) => {
   try {
-    await Record.findByIdAndDelete(req.params.id);
+    const record = await Record.findById(req.params.id);
+    if (!record) {
+      throw Error("Record does not exist");
+    }
+    await record.remove();
     res.json({ message: "Note Removed" });
   } catch (error) {
     res.status(404).json({ error: error.message });

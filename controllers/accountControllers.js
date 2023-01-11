@@ -20,7 +20,11 @@ const addAccount = async (req, res) => {
 
 const deleteAccount = async (req, res) => {
   try {
-    Account.findByIdAndDelete(req.params.id);
+    const account = await Account.findById(req.params.id);
+    if (!account) {
+      throw Error("Account does not exist");
+    }
+    await account.remove();
     res.json({ message: "Account Deleted" });
   } catch (error) {
     res.status(404).json({ error: error.message });
