@@ -18,7 +18,8 @@ const recordSchema = new Schema({
 
 recordSchema.statics.add = async function (
   type,
-  account,
+  account_name,
+  account_id,
   amount,
   category,
   date,
@@ -28,8 +29,6 @@ recordSchema.statics.add = async function (
 ) {
   if (!type) {
     throw Error("Enter an expense type");
-  } else if (!account) {
-    throw Error("Enter an account ");
   } else if (!amount) {
     throw Error("Enter an amount");
   } else if (!category) {
@@ -40,8 +39,8 @@ recordSchema.statics.add = async function (
   const record = await this.create({
     type,
     account: {
-      account_name: account.account_name,
-      account_id: account.account_id,
+      account_name,
+      account_id,
     },
     amount,
     category,
