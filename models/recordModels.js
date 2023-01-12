@@ -4,7 +4,10 @@ const Schema = mongoose.Schema;
 
 const recordSchema = new Schema({
   type: { type: String, required: true },
-  account: { type: String, required: true },
+  account: [
+    { account_name: { type: String, required: true } },
+    { account_id: { type: String, required: true } },
+  ],
   amount: { type: Number, required: true },
   category: { type: String, required: true },
   date: { type: Date, default: Date.now, required: true },
