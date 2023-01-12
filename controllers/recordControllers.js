@@ -26,7 +26,8 @@ const addRecord = async (req, res) => {
     if (record.type === "expense") {
       found_account.balance = Number(found_account.balance) - Number(amount);
     } else {
-      found_account.balance = Number(found_account.balance) + Number(amount);
+      found_account.balance =
+        parseInt(found_account.balance) + parseInt(amount);
     }
     await found_account.save();
 
