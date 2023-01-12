@@ -22,7 +22,7 @@ const addRecord = async (req, res) => {
       note,
       user_id
     );
-    const found_account = await Account.findById(req.params.id);
+    const found_account = await Account.findById(req.params.account);
     if (type === "expense") {
       found_account.balance -= amount;
     } else {
