@@ -23,10 +23,10 @@ const addRecord = async (req, res) => {
       user_id
     );
     const found_account = await Account.findById(account);
-    if (type === "expense") {
-      found_account.balance = found_account - amount;
+    if (record.type === "expense") {
+      found_account.balance -= amount;
     } else {
-      found_account.balance = found_account + amount;
+      found_account.balance += amount;
     }
     await found_account.save();
 
@@ -43,15 +43,19 @@ const deleteRecord = async (req, res) => {
       throw Error("Record does not exist");
     }
     const found_account = await Account.findById(record.account);
+    console.log("balance b4:" + found_account.balance);
     if (record.type === "expense") {
-      found_account.balance += record.amount;
+      found_account.balance =
+        Number(found_account.balance) + Number(record.amount);
     } else {
-      found_account.balance -= record.amount;
+      found_account.balance =
+        Number(found_account.balance) - Number(record.amount);
     }
     await found_account.save();
+    console.log("balance a4:" + found_account.balance);
 
     await record.remove();
-    res.json({ message: "Note Removed" });
+    res.json({ message: "Record Deleted" });
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
@@ -61,20 +65,20 @@ const updateRecord = async (req, res) => {
   try {
     const record = await Record.findById(req.params.id);
     const found_account = await Account.findById(record.account);
+    console.log("balance b4:" + found_account.balance);
 
     // update the balance b4 updating lol
     if (record.type != req.body.type) {
       if (req.body.type === "income") {
-        found_account.balance =
-          Number(found_account) + 2 * Number(record.amount);
+        found_account.balance += record.amount;
       } else {
-        found_account.balance =
-          Number(found_account) - 2 * Number(record.amount);
+        found_account.balance -= record.amount;
       }
     }
     if (record.amount != req.body.amount) {
     }
     await found_account.save();
+    console.log("balance a4:" + found_account.balance);
 
     record.type = req.body.type || record.type;
     record.account = req.body.account || record.account;
