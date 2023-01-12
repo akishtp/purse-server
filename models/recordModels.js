@@ -39,7 +39,10 @@ recordSchema.statics.add = async function (
   }
   const record = await this.create({
     type,
-    account,
+    account: {
+      account_name: account.account_name,
+      account_id: account.account_id,
+    },
     amount,
     category,
     date,
