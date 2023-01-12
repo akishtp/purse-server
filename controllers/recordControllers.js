@@ -43,6 +43,14 @@ const deleteRecord = async (req, res) => {
       throw Error("Record does not exist");
     }
     await record.remove();
+    const found_account = await Account.findById(record.account);
+    if (type === "expense") {
+      found_account.balance += amount;
+    } else {
+      found_account.balance -= amount;
+    }
+    await found_account.save();
+
     res.json({ message: "Note Removed" });
   } catch (error) {
     res.status(404).json({ error: error.message });
