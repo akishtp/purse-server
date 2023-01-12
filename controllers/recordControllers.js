@@ -24,7 +24,8 @@ const addRecord = async (req, res) => {
     );
     const found_account = await Account.findById(account);
     if (record.type === "expense") {
-      found_account.balance = Number(found_account.balance) - Number(amount);
+      found_account.balance =
+        parseInt(found_account.balance) - parseInt(amount);
     } else {
       found_account.balance =
         parseInt(found_account.balance) + parseInt(amount);
@@ -72,15 +73,31 @@ const updateRecord = async (req, res) => {
     if (record.type != req.body.type) {
       if (req.body.type === "income") {
         found_account.balance =
-          Number(found_account.balance) + Number(record.amount);
+          parseInt(found_account.balance) + 2 * parseInt(record.amount);
       } else {
         found_account.balance =
-          Number(found_account.balance) - Number(record.amount);
+          parseInt(found_account.balance) - 2 * parseInt(record.amount);
       }
     }
-    if (record.amount != req.body.amount) {
+    if (record.amount > req.body.amount) {
+      if (req.body.type === "expense") {
+        found_account.balance =
+          parseInt(found_account.balance) + (record.amount - req.body.amount);
+      } else {
+        found_account.balance =
+          parseInt(found_account.balance) - (record.amount - req.body.amount);
+      }
+    } else if (record.amount < req.body.amount) {
+      if (req.body.type === "expense") {
+        found_account.balance =
+          parseInt(found_account.balance) - (record.amount - req.body.amount);
+      } else {
+        found_account.balance =
+          parseInt(found_account.balance) + (record.amount - req.body.amount);
+      }
     }
     await found_account.save();
+
     console.log("balance a4:" + found_account.balance);
 
     record.type = req.body.type || record.type;
