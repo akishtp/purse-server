@@ -1,4 +1,5 @@
 const Record = require("../models/recordModels");
+const Account = require("../models/accountModels");
 
 const getRecord = async (req, res) => {
   const user_id = req.user._id;
@@ -21,6 +22,14 @@ const addRecord = async (req, res) => {
       note,
       user_id
     );
+    const found_account = await Account.findById(req.params.id);
+    if (type === "expense") {
+      found_account.balance -= amount;
+    } else {
+      found_account.balance += amount;
+    }
+    await found_account.save();
+
     res.status(200).json(record);
   } catch (error) {
     res.status(400).json({ error: error.message });
