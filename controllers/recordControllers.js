@@ -24,9 +24,9 @@ const addRecord = async (req, res) => {
     );
     const found_account = await Account.findById(account);
     if (record.type === "expense") {
-      found_account.balance -= amount;
+      found_account.balance = Number(found_account.balance) - Number(amount);
     } else {
-      found_account.balance += amount;
+      found_account.balance = Number(found_account.balance) + Number(amount);
     }
     await found_account.save();
 
@@ -70,9 +70,11 @@ const updateRecord = async (req, res) => {
     // update the balance b4 updating lol
     if (record.type != req.body.type) {
       if (req.body.type === "income") {
-        found_account.balance += record.amount;
+        found_account.balance =
+          Number(found_account.balance) + Number(record.amount);
       } else {
-        found_account.balance -= record.amount;
+        found_account.balance =
+          Number(found_account.balance) - Number(record.amount);
       }
     }
     if (record.amount != req.body.amount) {
