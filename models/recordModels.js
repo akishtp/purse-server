@@ -4,11 +4,8 @@ const Schema = mongoose.Schema;
 
 const recordSchema = new Schema({
   type: { type: String, required: true },
-  account: [
-    { account_name: { type: String, required: true } },
-    { account_id: { type: String, required: true } },
-  ],
-  amount: { type: Number, required: true },
+  account: { type: String, required: true },
+  amount: { type: String, required: true },
   category: { type: String, required: true },
   date: { type: Date, default: Date.now, required: true },
   payee: { type: String },
@@ -18,8 +15,7 @@ const recordSchema = new Schema({
 
 recordSchema.statics.add = async function (
   type,
-  account_name,
-  account_id,
+  account,
   amount,
   category,
   date,
@@ -29,6 +25,8 @@ recordSchema.statics.add = async function (
 ) {
   if (!type) {
     throw Error("Enter an expense type");
+  } else if (!account) {
+    throw Error("Enter an account ");
   } else if (!amount) {
     throw Error("Enter an amount");
   } else if (!category) {
@@ -38,10 +36,7 @@ recordSchema.statics.add = async function (
   }
   const record = await this.create({
     type,
-    account: {
-      account_name,
-      account_id,
-    },
+    account,
     amount,
     category,
     date,
