@@ -44,9 +44,9 @@ const deleteRecord = async (req, res) => {
     }
     const found_account = await Account.findById(record.account);
     if (record.type === "expense") {
-      found_account.balance += amount;
+      found_account.balance += record.amount;
     } else {
-      found_account.balance -= amount;
+      found_account.balance -= record.amount;
     }
     await found_account.save();
 
