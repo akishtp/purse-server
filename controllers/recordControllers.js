@@ -119,7 +119,15 @@ const updateRecord = async (req, res) => {
 
       await old_account.save();
     } else {
-      // /make no changes to accounts
+      if (record.account !== req.body.account) {
+        if (req.body.type === "expense") {
+          new_account.balance =
+            parseInt(new_account.balance) - parseInt(req.body.amount);
+        } else {
+          new_account.balance =
+            parseInt(new_account.balance) + parseInt(req.body.amount);
+        }
+      }
     }
     record.type = req.body.type || record.type;
     record.account = req.body.account || record.account;
@@ -130,6 +138,7 @@ const updateRecord = async (req, res) => {
     record.payee = req.body.payee || record.payee;
     record.note = req.body.note || record.note;
 
+    await new_account.save();
     const updated_record = await record.save();
     res.status(200).json(updated_record);
   } catch (error) {
