@@ -48,16 +48,16 @@ const deleteRecord = async (req, res) => {
       throw Error("Record does not exist");
     }
     const found_account = await Account.findById(record.account);
-    console.log("balance b4:" + found_account.balance);
-    if (record.type === "expense") {
-      found_account.balance =
-        Number(found_account.balance) + Number(record.amount);
-    } else {
-      found_account.balance =
-        Number(found_account.balance) - Number(record.amount);
+    if (found_account) {
+      if (record.type === "expense") {
+        found_account.balance =
+          Number(found_account.balance) + Number(record.amount);
+      } else {
+        found_account.balance =
+          Number(found_account.balance) - Number(record.amount);
+      }
+      await found_account.save();
     }
-    await found_account.save();
-    console.log("balance a4:" + found_account.balance);
 
     await record.remove();
     res.json({ message: "Record Deleted" });
@@ -70,55 +70,66 @@ const updateRecord = async (req, res) => {
   try {
     const record = await Record.findById(req.params.id);
     const found_account = await Account.findById(record.account);
-    console.log("balance b4:" + found_account.balance);
 
-    // update the balance b4 updating lol
-    if (record.type != req.body.type) {
-      if (req.body.type === "income") {
-        found_account.balance =
-          parseInt(found_account.balance) + 2 * parseInt(record.amount);
-      } else {
-        found_account.balance =
-          parseInt(found_account.balance) - 2 * parseInt(record.amount);
+    if (found_account) {
+      // update the balance b4 updating lol
+      if (record.type != req.body.type) {
+        if (req.body.type === "income") {
+          found_account.balance =
+            parseInt(found_account.balance) + 2 * parseInt(record.amount);
+        } else {
+          found_account.balance =
+            parseInt(found_account.balance) - 2 * parseInt(record.amount);
+        }
+      }
+      if (record.amount > req.body.amount) {
+        if (req.body.type === "expense") {
+          found_account.balance =
+            parseInt(found_account.balance) + (record.amount - req.body.amount);
+        } else {
+          found_account.balance =
+            parseInt(found_account.balance) - (record.amount - req.body.amount);
+        }
+      } else if (record.amount < req.body.amount) {
+        if (req.body.type === "expense") {
+          found_account.balance =
+            parseInt(found_account.balance) - (record.amount - req.body.amount);
+        } else {
+          found_account.balance =
+            parseInt(found_account.balance) + (record.amount - req.body.amount);
+        }
+      }
+
+      if (record.account !== req.body.account) {
+        const new_account = await Account.findById(req.body.account);
+        if (req.body.type === "expense") {
+          found_account.balance =
+            parseInt(found_account.balance) + parseInt(req.body.amount);
+          new_account.balance =
+            parseInt(new_account.balance) - parseInt(req.body.amount);
+        } else {
+          found_account.balance =
+            parseInt(found_account.balance) - parseInt(req.body.amount);
+          new_account.balance =
+            parseInt(new_account.balance) + parseInt(req.body.amount);
+        }
+        await new_account.save();
+      }
+
+      await found_account.save();
+    } else {
+      if (record.account !== req.body.account) {
+        const new_account = await Account.findById(req.body.account);
+        if (req.body.type === "expense") {
+          new_account.balance =
+            parseInt(new_account.balance) - parseInt(req.body.amount);
+        } else {
+          new_account.balance =
+            parseInt(new_account.balance) + parseInt(req.body.amount);
+        }
+        await new_account.save();
       }
     }
-    if (record.amount > req.body.amount) {
-      if (req.body.type === "expense") {
-        found_account.balance =
-          parseInt(found_account.balance) + (record.amount - req.body.amount);
-      } else {
-        found_account.balance =
-          parseInt(found_account.balance) - (record.amount - req.body.amount);
-      }
-    } else if (record.amount < req.body.amount) {
-      if (req.body.type === "expense") {
-        found_account.balance =
-          parseInt(found_account.balance) - (record.amount - req.body.amount);
-      } else {
-        found_account.balance =
-          parseInt(found_account.balance) + (record.amount - req.body.amount);
-      }
-    }
-
-    if (record.account !== req.body.account) {
-      const new_account = await Account.findById(req.body.account);
-      if (req.body.type === "expense") {
-        found_account.balance =
-          parseInt(found_account.balance) + parseInt(req.body.amount);
-        new_account.balance =
-          parseInt(new_account.balance) - parseInt(req.body.amount);
-      } else {
-        found_account.balance =
-          parseInt(found_account.balance) - parseInt(req.body.amount);
-        new_account.balance =
-          parseInt(new_account.balance) + parseInt(req.body.amount);
-      }
-      await new_account.save();
-    }
-
-    await found_account.save();
-
-    console.log("balance a4:" + found_account.balance);
 
     record.type = req.body.type || record.type;
     record.account = req.body.account || record.account;
