@@ -127,19 +127,19 @@ const updateRecord = async (req, res) => {
           new_account.balance =
             parseInt(new_account.balance) + parseInt(req.body.amount);
         }
+        await new_account.save();
       }
     }
 
     record.type = req.body.type || record.type;
     record.account = req.body.account || record.account;
-    record.account_name = req.body.account_name || new_account.name;
+    record.account_name = new_account.name;
     record.amount = req.body.amount || record.amount;
     record.category = req.body.category || record.category;
     record.date = req.body.date || record.date;
     record.payee = req.body.payee || record.payee;
     record.note = req.body.note || record.note;
 
-    await new_account.save();
     const updated_record = await record.save();
     res.status(200).json(updated_record);
   } catch (error) {
