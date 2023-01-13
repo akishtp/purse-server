@@ -67,7 +67,6 @@ const updateRecord = async (req, res) => {
   try {
     const record = await Record.findById(req.params.id);
     const found_account = await Account.findById(record.account);
-    const new_account = await Account.findById(req.params.account);
     console.log("balance b4:" + found_account.balance);
 
     // update the balance b4 updating lol
@@ -98,6 +97,7 @@ const updateRecord = async (req, res) => {
       }
     }
     if (record.account !== req.body.account) {
+      const new_account = await Account.findById(req.params.account);
       if (req.body.type === "expense") {
         found_account.balance =
           parseInt(found_account.balance) + parseInt(req.body.amount);
@@ -109,9 +109,9 @@ const updateRecord = async (req, res) => {
         new_account.balance =
           parseInt(new_account.balance) + parseInt(req.body.amount);
       }
+      await new_account.save();
     }
     await found_account.save();
-    await new_account.save();
 
     console.log("balance a4:" + found_account.balance);
 
