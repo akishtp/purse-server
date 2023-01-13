@@ -133,7 +133,7 @@ const updateRecord = async (req, res) => {
 
     record.type = req.body.type || record.type;
     record.account = req.body.account || record.account;
-    record.account_name = req.body.account_name || record.account_name;
+    record.account_name = req.body.account_name || new_account.name;
     record.amount = req.body.amount || record.amount;
     record.category = req.body.category || record.category;
     record.date = req.body.date || record.date;
