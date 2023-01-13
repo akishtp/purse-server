@@ -9,9 +9,10 @@ const getRecord = async (req, res) => {
 };
 
 const addRecord = async (req, res) => {
-  const { type, account, account_name, amount, category, date, payee, note } =
-    req.body;
+  const { type, account, amount, category, date, payee, note } = req.body;
   const user_id = req.user._id;
+  const found_account = await Account.findById(account);
+  const account_name = found_account.name;
   try {
     const record = await Record.add(
       type,
