@@ -127,7 +127,6 @@ const updateRecord = async (req, res) => {
           new_account.balance =
             parseInt(new_account.balance) + parseInt(req.body.amount);
         }
-        await new_account.save();
       }
     }
 
@@ -140,6 +139,7 @@ const updateRecord = async (req, res) => {
     record.payee = req.body.payee || record.payee;
     record.note = req.body.note || record.note;
 
+    await new_account.save();
     const updated_record = await record.save();
     res.status(200).json(updated_record);
   } catch (error) {
