@@ -9,12 +9,14 @@ const getRecord = async (req, res) => {
 };
 
 const addRecord = async (req, res) => {
-  const { type, account, amount, category, date, payee, note } = req.body;
+  const { type, account, account_name, amount, category, date, payee, note } =
+    req.body;
   const user_id = req.user._id;
   try {
     const record = await Record.add(
       type,
       account,
+      account_name,
       amount,
       category,
       date,
@@ -119,6 +121,7 @@ const updateRecord = async (req, res) => {
 
     record.type = req.body.type || record.type;
     record.account = req.body.account || record.account;
+    record.account_name = req.body.account_name || record.account_name;
     record.amount = req.body.amount || record.amount;
     record.category = req.body.category || record.category;
     record.date = req.body.date || record.date;
