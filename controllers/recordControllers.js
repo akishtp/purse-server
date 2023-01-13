@@ -71,6 +71,7 @@ const updateRecord = async (req, res) => {
     const record = await Record.findById(req.params.id);
     const old_account = await Account.findById(record.account);
     const new_account = await Account.findById(req.body.account);
+    console.log(new_account);
 
     // check if old account exists?
     if (old_account) {
@@ -142,7 +143,7 @@ const updateRecord = async (req, res) => {
     const updated_record = await record.save();
     res.status(200).json(updated_record);
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    res.status(404).json({ error: error.message, new_account: new_account });
   }
 };
 
