@@ -59,9 +59,7 @@ const deleteRecord = async (req, res) => {
       }
       await found_account.save();
     }
-    const records = await Record.find({ user_id: record.user_id }).sort({
-      date: -1,
-    });
+    const records = await Record.find({ user_id }).sort({ date: -1 });
     await record.remove();
     res.json(records);
   } catch (error) {
@@ -139,12 +137,10 @@ const updateRecord = async (req, res) => {
     record.date = req.body.date || record.date;
     record.payee = req.body.payee || record.payee;
     record.note = req.body.note || record.note;
-
+    user_id = record.user_id;
     await new_account.save();
     const updated_record = await record.save();
-    const records = await Record.find({ user_id: updated_record.user_id }).sort(
-      { date: -1 }
-    );
+    const records = await Record.find({ user_id }).sort({ date: -1 });
 
     res.status(200).json(records);
   } catch (error) {
