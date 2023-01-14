@@ -1,6 +1,6 @@
 {
   "name": "verlow-server",
-  "version": "2.5.1",
+  "version": "2.6",
   "description": "Server files for Verlow",
   "main": "server.js",
   "scripts": {
