@@ -143,7 +143,7 @@ const updateRecord = async (req, res) => {
     const updated_record = await record.save();
     res.status(200).json(updated_record);
   } catch (error) {
-    res.status(404).json({ error: error.message, new_account: new_account });
+    res.status(404).json({ error: error.message });
   }
 };
 
