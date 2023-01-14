@@ -60,8 +60,8 @@ const deleteRecord = async (req, res) => {
       await found_account.save();
     }
     let user_id = record.user_id;
-    const records = await Record.find({ user_id }).sort({ date: -1 });
     await record.remove();
+    const records = await Record.find({ user_id }).sort({ date: -1 });
     res.json(records);
   } catch (error) {
     res.status(404).json({ error: error.message });
